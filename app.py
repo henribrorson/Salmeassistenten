@@ -2,10 +2,12 @@ import streamlit as st
 import json
 import numpy as np
 import os
-from openai import OpenAI
+import openai
 
-client = OpenAI()
+# Set API key
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
+# Load data
 with open("salmer_embeddings.json", "r", encoding="utf-8") as f:
     data = json.load(f)["salmer"]
 
@@ -13,20 +15,8 @@ def cosine_similarity(a, b):
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
 def find_relevant_salmer(input_text):
-    response = client.embeddings.create(
-        model="text-embedding-3-small",
-        input=input_text
-    )
-    input_embedding = response.data[0].embedding
-
-    scored = []
-    for salme in data:
-        if "embedding" in salme:
-            sim = cosine_similarity(input_embedding, salme["embedding"])
-            scored.append((sim, salme))
-
-    scored.sort(reverse=True, key=lambda x: x[0])
-    return [s[1] for s in scored[:30]]
+    # Midlertidig fallback (uden embeddings)
+    return data[:20]
 
 st.title("Salmeassistent")
 
@@ -36,11 +26,9 @@ evangelium = st.text_area("Evangelium")
 
 if st.button("Find salmer"):
 
-    input_text = f"GT: {gt}\nEpistel: {epistel}\nEvangelium: {evangelium}"
+    st.subheader("Forslag til salmer")
 
-    top_salmer = find_relevant_salmer(input_text)
+    salmer = find_relevant_salmer(gt + epistel + evangelium)
 
-    st.subheader("Top 30 relevante salmer")
-
-    for s in top_salmer:
+    for s in salmer:
         st.write(f"{s['nr']} – {s['titel']}")
