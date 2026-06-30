@@ -1,18 +1,5 @@
+
 {
-  "salmer": [
-    {
-      "nr": 1,
-      "titel": "Guds menighed, syng for vor skaber i løn",
-      "forfatter": "N.F.S. Grundtvig",
-      "aar": 1847,
-      "epoke": "Romantik",
-      "tekst": [],
-      "temaer": [],
-      "tone": [],
-      "liturgisk_brug": [],
-      "kirkeaar": [],
-      "bibelske_motiver": [],
-      "noegleord": []
-    }
-  ]
+  "version": 1,
+  "salmer": []
 }
